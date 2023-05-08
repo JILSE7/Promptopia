@@ -4,6 +4,7 @@ import NextAuth, { Awaitable, DefaultSession, Session, SessionOptions } from "ne
 import GoogleProvider from 'next-auth/providers/google';
 
 type Profile = {
+  id?: string;
   email?: string;
   username?: string;
   image?: string;
@@ -27,7 +28,7 @@ const handler = NextAuth({
         ...params.session,
         user: {
           ...params.session.user,
-          id: userSession?._id.toString(),
+          id: userSession?._id,
         },
       };
     },
