@@ -1,26 +1,15 @@
-import { connectToDatabase } from "@config/database.config";
+import { connectToDatabase } from "@config/database.config"
 import Prompt from "@models/Prompt.model";
-import { NextRequest, NextResponse } from "next/server";
 
-export const POST = async (req:NextRequest) => {
-  const { userId, prompt, tag } = await req.json();
 
+export const GET = async () => {
   try {
     await connectToDatabase();
-    const newPrompt = await Prompt.create({
-      creator: userId,
-      prompt,
-      tag,
-    });
 
-    await newPrompt.save();
-
-    return new Response(JSON.stringify(newPrompt), {status: 201})
+    const prompts = await Prompt.find({}).populate("creator");
+    return new Response(JSON.stringify(prompts), {status: 200});
 
   } catch (error) {
-    console.log(error);
-    return new Response("Failed to create a new prompt", {status: 500})
+    return new Response(JSON.stringify("Failed to fetch all prompts"), {status: 200});
   }
-
-  
 }

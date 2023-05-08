@@ -8,13 +8,15 @@ export const connectToDatabase = async () => {
 
   if (isConnected) {
     console.log('=> using existing database connection');
-    return Promise.resolve();
+    return;
   }
 
   try {
     await mongoose.connect(process.env.MONGODB_URI!, {
       dbName: process.env.DB_NAME,
-    });
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    } as mongoose.ConnectOptions);
 
     isConnected = true;
 

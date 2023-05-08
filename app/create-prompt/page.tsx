@@ -8,36 +8,42 @@ import Form from "@components/forms/Form.component";
 const CreatePrompt = () => {
   const router = useRouter();
   const { data: session } = useSession();
-  const [isLoading, setIsLoading] = useState<boolean>();
-  console.log({session});
-  const submit = async(prompt: string, tags: string) => {
-    if (prompt.trim().length === 0 || tags.trim().length === 0) {
-      return;
-    }
-    setIsLoading(true);
+
+  const [submitting, setIsSubmitting] = useState(false);
+  const [post, setPost] = useState({ prompt: "", tag: "" });
+
+  const createPrompt = async (e: any) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
     try {
-      const response = await fetch("/api/prompt", {
+      const response = await fetch("/api/prompt/new", {
         method: "POST",
         body: JSON.stringify({
-          prompt: prompt,
+          prompt: post.prompt,
           userId: session?.user?.id,
-          tag: tags,
+          tag: post.tag,
         }),
       });
 
       if (response.ok) {
-        console.log("success");
         router.push("/");
       }
     } catch (error) {
       console.log(error);
     } finally {
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <Form isLoading={isLoading} type="Create" submit={submit} />
+    <Form
+      type='Create'
+      post={post}
+      setPost={setPost}
+      submitting={submitting}
+      handleSubmit={createPrompt}
+    />
   )
 }
 

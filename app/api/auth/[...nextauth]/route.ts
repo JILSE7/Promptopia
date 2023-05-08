@@ -20,6 +20,7 @@ const handler = NextAuth({
   ],
   callbacks: {
     async session(params: { session: Session }) {
+      console.log("Verifying session");
       const userSession = await User.findOne({
         email: params.session.user?.email,
       });
@@ -33,6 +34,7 @@ const handler = NextAuth({
       };
     },
     async signIn(params: { profile?: Profile }) {
+      console.log("Verifying sign in");
       try {
         const { profile } = params;
         await connectToDatabase()

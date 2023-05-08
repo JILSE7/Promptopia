@@ -19,8 +19,7 @@ const RootLayout: FC<{ children: ReactNode }> = ({ children }) => {
             <Nav />
             {children}
           </main>
-
-        </  AuthProvider>
+        </AuthProvider>
       </body>
     </html>
   )

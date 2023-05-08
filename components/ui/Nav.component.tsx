@@ -1,6 +1,6 @@
 'use client'
 
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useId, useState } from "react";
 import { ClientSafeProvider, getProviders, signIn, signOut, useSession } from 'next-auth/react';
 import Image from "next/image"
 import Link from "next/link"
@@ -8,7 +8,6 @@ import { Session } from "next-auth";
 
 const NavBar = () => {
   const { data: session } = useSession();
-  console.log({ session });
 
   const [providers, setProviders] = useState<any>(null);
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false);
@@ -28,7 +27,6 @@ const NavBar = () => {
     setProvidersFunction()
   }, [])
 
-  console.log({ providers });
   return (
     <nav className="flex-between w-full mb-16 pt-3">
       <Link href="/" className="flex flex-center gap-2">
@@ -66,7 +64,7 @@ const DesktopNav: FC<{ providers: any, singOut: () => any, session: Session | nu
   session,
   singOut
 }) => {
-
+  const reactId = useId()
 
   return (
     < div className="sm:flex hidden relative" >
@@ -92,7 +90,7 @@ const DesktopNav: FC<{ providers: any, singOut: () => any, session: Session | nu
               providers && Object.values(providers).map(() => (
                 <button
                   type="button"
-                  key={providers.name}
+                  key={reactId}
                   onClick={() => signIn(providers.id)}
                 >
                   Sing In
@@ -113,7 +111,7 @@ const MovileNav: FC<{ providers: any, singOut: () => any, session: Session | nul
   toggleDropdown,
   setToggleDropdown
 }) => {
-
+  const reactId = useId()
 
   return (
     <div className="sm:hidden flex relative">
@@ -147,7 +145,6 @@ const MovileNav: FC<{ providers: any, singOut: () => any, session: Session | nul
                     Create Prompt
                   </Link>
                   <button
-                    key={providers.name}
                     type="button"
                     className="mt-5 w-full black_btn"
                     onClick={() => {
@@ -164,10 +161,10 @@ const MovileNav: FC<{ providers: any, singOut: () => any, session: Session | nul
         ) : (
           <>
             {
-              providers && Object.values(providers).map(() => (
+              providers && Object.values(providers).map((_, i) => (
                 <button
                   type="button"
-                  key={providers.name}
+                  key={reactId}
                   onClick={() => signIn(providers.id)}
                 >
                   Sing In
