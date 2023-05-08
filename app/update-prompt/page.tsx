@@ -7,26 +7,10 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
  
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent?: ResolvingMetadata,
-): Promise<Metadata> {
-  // read route params
-  const id = params.id;
- 
-  // fetch data
-  // const product = await fetch(`https://.../${id}`).then((res) => res.json());
- 
-  // optionally access and extend (rather than replace) parent metadata
-  const previousImages = (await parent)!.openGraph?.images || [];
- 
-  return {
-    title: "this is a example",
-    openGraph: {
-      images: ['https://www.udemy.com/staticx/udemy/images/v7/logo-udemy-inverted.svg', ...previousImages],
-    },
-  };
-}
+export const metadata: Metadata = {
+  title: 'Test',
+  description: 'jsjjs',
+};
 
 const UpdatePrompt  = () => {
   
